@@ -39,3 +39,16 @@ h1, .summary-table {
     display: inline-block; /* Allows elements to sit side-by-side */
     vertical-align: middle; /* Ensures they line up straight */
 }
+
+@media (max-width: 600px) {
+    h1 {
+        font-size: 1.2rem; /* Shrink title text to save space */
+        margin-bottom: 10px;
+    }
+    
+    .summary-table {
+        margin-left: 0; /* Remove the side gap when stacked */
+        width: 100%;    /* Allow table to use full width */
+    }
+}
+
