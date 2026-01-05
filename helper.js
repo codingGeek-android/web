@@ -26,9 +26,9 @@ function refresh() {
     });
 
     // 4. Update the display elements (q[0], q[1], q[2])
-    if (q[0]) q[0].innerText = 60 - ly;
-    if (q[1]) q[1].innerText = 60 - deng;
-    if (q[2]) q[2].innerText = 60 - yu;
+    if (q[0]) q[0].innerText = ly;
+    if (q[1]) q[1].innerText = deng;
+    if (q[2]) q[2].innerText = yu;
 }   
 for (let i = 0; i < 7; i++) {
     tables[0].push(t.querySelectorAll(`td[headers="${weekdays[i]}"]`));
@@ -89,4 +89,5 @@ button.addEventListener('click', () => {
     button.remove();
     createNewTable();
     main.append(button);
+
 })
