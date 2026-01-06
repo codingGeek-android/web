@@ -1,6 +1,6 @@
 // JavaScript source code
 const button = document.createElement('button');
-button.textContent = "下一周";
+button.textContent = "下七天";
 const t = document.getElementById('tab');
 const main = document.getElementById('main');
 const space = document.createElement('a');
@@ -30,12 +30,31 @@ function refresh() {
     if (q[1]) q[1].innerText = deng;
     if (q[2]) q[2].innerText = yu;
 }   
+
+function weekly_refresh(evt) {
+    var temp = [];
+    let ly = 0, deng = 0, yu = 0;
+    for (let i = 0; i < 7; i++) {
+        temp.push(evt.currentTarget.querySelectorAll(`td[headers="${weekdays[i]}"]`));
+    }
+    for (let x = 0; x < 7; x++) {
+        // Get the value from the input inside each cell
+        // table[x] is the day, [0], [1], [2] are the rows
+        ly += Number(temp[x][0].querySelector('input').value) || 0;
+        deng += Number(temp[x][1].querySelector('input').value) || 0;
+        yu += Number(temp[x][2].querySelector('input').value) || 0;
+    }
+    evt.currentTarget.querySelectorAll('td[id="sum"]')[0].innerText = ly;
+    evt.currentTarget.querySelectorAll('td[id="sum"]')[1].innerText = deng;
+    evt.currentTarget.querySelectorAll('td[id="sum"]')[2].innerText = yu;
+}
 for (let i = 0; i < 7; i++) {
     tables[0].push(t.querySelectorAll(`td[headers="${weekdays[i]}"]`));
 }
+tables[0].push()
 tables[0].forEach((weekday) => {
     weekday.forEach((cell) => {
-        cell.addEventListener("input", () => {
+        cell.addEventListener("input", function(event) {
             val = 0;
             for (let j = 0; j < 3; j++) {
                 val += Number((weekday[j].querySelector("input").value));
@@ -44,6 +63,9 @@ tables[0].forEach((weekday) => {
             refresh();
         });
     });
+});
+t.addEventListener("input",function(event) {
+    weekly_refresh(event);
 });
 
 space.innerHTML = "<br>";
@@ -66,11 +88,16 @@ function createNewTable() {
     let s = space.cloneNode(true);
     let dup = t.cloneNode(true);    
     tables.push([]);
-    var header = dup.querySelector("caption");
-    header.innerText = `第${chinese_numerals[tables.length-1]}周`;
+    var ds = dup.querySelectorAll("th");
+    for (let z = 1; z < 8; z++) {
+        ds[z].innerText = (tables.length - 1) * 7 + z;
+    }
     for (let k = 0; k < 7; k++) {
         tables[tables.length-1].push(dup.querySelectorAll(`td[headers="${weekdays[k]}"]`));
     }
+    dup.addEventListener("input", function (event) {
+        weekly_refresh(event);
+    });
     tables[tables.length - 1].forEach((weekday) => {
         weekday.forEach((cell) => {
             cell.addEventListener("input", () => {
@@ -89,5 +116,4 @@ button.addEventListener('click', () => {
     button.remove();
     createNewTable();
     main.append(button);
-
 })
